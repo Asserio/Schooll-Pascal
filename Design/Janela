@@ -51,7 +51,7 @@ write(char(219));
 end;
 {variavel usada e incrementada com o primeiro for lopp(variavel i)
 isto é usado para começar a desenhar a barra no lado direito das horizontais}
-vcomp := x + 1;
+vcomp := x + i;
 {linha vertical direita}
 for k:= 1 to comp do
 begin
