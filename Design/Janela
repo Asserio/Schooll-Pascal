@@ -1,0 +1,62 @@
+program design;
+uses crt;
+
+var
+i,x,y,y1,comp,vcomp,k,g,l,largura : integer;
+
+begin
+clrscr;
+writeln('Insira a largura das horizontais.');
+readln(largura);
+writeln('Insira a coordenada da horizontal cima e baixo, tem de ser iguais.');
+write('x = ');
+read(x);
+write('y = ');
+read(y);
+writeln('Insira a coordenada das verticais direita e esquerda.');
+writeln('O valor tem de ser mais alto do que nas horizontais!');
+write('y1 = ');
+read(y1);
+clrscr;
+
+{Este valor vai ser usado para fazer a linha vertical esquerda e direita 
+num for loop}
+comp := y1 - y + 1;
+{linha horizontal de cima}
+textcolor(lightgreen);
+for i:= 1 to largura do
+begin
+{Posição em que a barra vai ser desenhada}
+gotoxy(x+i,y);
+{Caracter que vai ser escrito na posição x+i,y}
+write(char(223));
+end;
+
+{linha horizontal de baixo}
+for l:= 1 to largura do
+begin
+gotoxy(x+l,y1);
+write(char(220));
+end;
+
+{linha vertical esquerda}
+{aqui desincremento o 1 por -1 porque sem isso ia desenhar mais abaixo}
+y := y - 1;
+{to comp para o desenho das verticais ficar na largura certa com a posição
+das horizontais, estas contas foram feitas no inicio do programa}
+for g:= 1 to comp do
+begin
+gotoxy(x,y+g);
+write(char(219));
+end;
+{variavel usada e incrementada com o primeiro for lopp(variavel i)
+isto é usado para começar a desenhar a barra no lado direito das horizontais}
+vcomp := x + 1;
+{linha vertical direita}
+for k:= 1 to comp do
+begin
+gotoxy(vcomp,y+k);
+write(char(219));
+end;
+readkey;
+end.
