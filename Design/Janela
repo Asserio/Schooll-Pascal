@@ -59,4 +59,5 @@ gotoxy(vcomp,y+k);
 write(char(219));
 end;
 readkey;
+clrscr;
 end.
