@@ -1,63 +1,154 @@
+{nome do programa}
 program design;
+{usando a blibioteca crt, sem isto nao conseguia usar o readkey}
 uses crt;
 
+{definicao de variaveis}
 var
-i,x,y,y1,comp,vcomp,k,g,l,largura : integer;
-
+i,x,y,y1,comp,vcomp,g,largura,p,p1,cor,vcor,pcomp,exit : integer;
+{inicio do corpo do programa}
 begin
-clrscr;
-writeln('Insira a largura das horizontais.');
-readln(largura);
-writeln('Insira a coordenada da horizontal cima e baixo, tem de ser iguais.');
-write('x = ');
-read(x);
-write('y = ');
-read(y);
-writeln('Insira a coordenada das verticais direita e esquerda.');
-writeln('O valor tem de ser mais alto do que nas horizontais!');
-write('y1 = ');
-read(y1);
-clrscr;
+exit := 1;
+while(exit <> 2) do
+begin
+     clrscr;
+     textcolor(white);
+     writeln('Este programa foi feito pelo Cristiano!');
+     writeln('');
+     writeln('Insira a largura das horizontais, MAX 50!');
+     readln(largura);
 
-{Este valor vai ser usado para fazer a linha vertical esquerda e direita 
-num for loop}
+     if (largura <= 0) or (largura > 50) then
+      begin
+          repeat
+            if (largura < 1) or (largura > 50) then clrscr;
+            writeln('O numero que introduziu e invalido, insira numeros entre 1 e 50!');
+            writeln('Insira a largura das horizontais, MAX 50!');
+            readln(largura);
+          until(largura >= 1) and (largura <= 50);
+      end;
+
+     writeln('Insira as coordenadas iniciais das horizontais.');
+     writeln('Maximo 23!');
+     write('x = ');
+     read(x);
+
+     if (x > 23) or (x < 1) then
+     begin
+          repeat
+           if (x < 1) or (x > 23) then clrscr;
+            writeln('O numero que introduzio e invalido!');
+            writeln('Insira as coordenadas iniciais das horizontais.');
+            writeln('Maximo 23!');
+            write('x = ');
+            read(x);
+          until(x >= 1) and (x <= 23);
+     end;
+
+     write('y = ');
+     read(y);
+
+     if (y > 23) or (y < 1) then
+     begin
+          repeat
+            if (y < 1) or (y > 23) then clrscr;
+            writeln('O numero que introduzio e invalido!');
+            writeln('Insira as coordenadas inicial da horizontal restante.');
+            writeln('Maximo 23!');
+            writeln('x = ',x);
+            write('y = ');
+            read(y);
+          until(y >= 1) and (y <= 23);
+     end;
+
+     writeln('Insira o tamanho das verticais.');
+     writeln('O valor tem de ser mais alto do que nas horizontais, MAX 25!');
+     write('y1 = ');
+     read(y1);
+     clrscr;
+
+     if (y1 > 25) or (y1 < 1) or (y1 < x) and (y1 < y) then
+     begin
+          repeat
+            if (y1 < 1) or (y1 > 25) or (y1 < x) and (y1 < y) then clrscr;
+            writeln('O numero que introduzio e invalido!');
+            writeln('Insira o tamanha das verticais.');
+            writeln('O valor tem de ser mais alto do que nas horizontais, MAX 25!');
+            write('y1 = ');
+            read(y1);
+          until(y1 >= 1) and (y1 <= 25) and (y1 > x) and (y1 > y);
+     end;
+
+     writeln('Cores Disponiveis');
+     writeln('4 = Vermelho / 2 = Verde / 15 = Branco / 1 = Azul / 10 = Verde Claro');
+     writeln('');
+     writeln('Insira uma cor para a sua moldura.');
+     readln(cor);
+     writeln('Insira uma cor para o preenchimento.');
+     readln(vcor);
+     clrscr;
+
+{O comp vai ser usado para o desenho das verticais ficar do tamanho
+certo entre as horizontais}
 comp := y1 - y + 1;
-{linha horizontal de cima}
-textcolor(lightgreen);
+{Esta variavel e usada no preenchimento, pois sem ela ele iria passar
+a horizontal de baixo, e iria sobrepor a sua cor}
+pcomp := y1 - y;
+{Trocando a cor no preenchimento}
+textcolor(vcor);
+{Aqui usasse 2 for encadeados para ser se fazer o preenchimento}
+for p:= 0 to largura  do
+begin
+     for p1:= 1 to pcomp do
+     begin
+          gotoxy(x+p,y+p1);
+          write(char(219));
+     end;
+end;
+
+{dando cor a uma parte da moldura}
+textcolor(cor);
+
 for i:= 1 to largura do
 begin
-{Posição em que a barra vai ser desenhada}
-gotoxy(x+i,y);
-{Caracter que vai ser escrito na posição x+i,y}
-write(char(223));
+     {linha horizontal de cima}
+     {Posicao em que a barra vai ser desenhada}
+     gotoxy(x+i,y);
+     {Caracter que vai ser escrito na posicao x+i,y}
+     write(char(219));
+     {linha horizontal de baixo}
+     gotoxy(x+i,y1);
+     write(char(219));
 end;
 
-{linha horizontal de baixo}
-for l:= 1 to largura do
-begin
-gotoxy(x+l,y1);
-write(char(220));
-end;
-
-{linha vertical esquerda}
-{aqui desincremento o 1 por -1 porque sem isso ia desenhar mais abaixo}
+{aqui desincremento a var y por -1 porque sem isso ia desenhar mais abaixo}
 y := y - 1;
-{to comp para o desenho das verticais ficar na largura certa com a posição
-das horizontais, estas contas foram feitas no inicio do programa}
+{variavel usada e incrementada com o primeiro for loop(variavel i)
+isto e usado para comecar a desenhar a barra no lado direito das horizontai}
+vcomp := x + i;
+{Voltando a trocar a cor para a moldura}
+textcolor(cor);
+
 for g:= 1 to comp do
 begin
-gotoxy(x,y+g);
-write(char(219));
+     {linha vertical esquerda}
+     gotoxy(x,y+g);
+     write(char(219));
+
+     {linha vertical direita}
+     gotoxy(vcomp,y+g);
+     write(char(219));
 end;
-{variavel usada e incrementada com o primeiro for lopp(variavel i)
-isto é usado para começar a desenhar a barra no lado direito das horizontais}
-vcomp := x + i;
-{linha vertical direita}
-for k:= 1 to comp do
-begin
-gotoxy(vcomp,y+k);
-write(char(219));
+
+    readkey;
+    clrscr;
+
+    textcolor(white);
+    writeln('Gostaria de continuar a fazer molduras?');
+    writeln('1 = sim');
+    writeln('2 = nao');
+    readln(exit);
+    clrscr;
 end;
-readkey;
-clrscr;
+{fim do corpo do programa}
 end.
