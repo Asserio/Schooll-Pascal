@@ -90,10 +90,16 @@ async def __search_method1(texts, answers, reverse):
             counts[answer] += len(re.findall(f" {answer} ", text))
 
     print(counts)
-
+    
     # If not all answers have count of 0 and the best value doesn't occur more than once, return the best answer
     best_value = min(counts.values()) if reverse else max(counts.values())
     if not all(c == 0 for c in counts.values()) and list(counts.values()).count(best_value) == 1:
+        HighKey = max(counts, key=counts.get)
+        AvgKey = sum(counts.values())/3
+        round(AvgKey)
+        #LowKey = min(counts, key=counts.get)
+        TrustMe = (HighKey-AvgKey)/HighKey
+        print(f"{Fore.GREEN}{TrustMe}{Style.RESET_ALL}\n")
         return min(counts, key=counts.get) if reverse else max(counts, key=counts.get)
     return ""
 
@@ -116,8 +122,14 @@ async def __search_method2(texts, answers, reverse):
 
     print(counts)
     counts_sum = {answer: sum(keyword_counts.values()) for answer, keyword_counts in counts.items()}
-
+    
     if not all(c == 0 for c in counts_sum.values()):
+        HighKey = max(counts_sum, key=counts_sum.get)
+        AvgKey = sum(keyword_counts.values())/3
+        round(AvgKey)
+        #LowKey = min(counts_sum, key=counts_sum.get)
+        TrustMe = (HighKey-AvgKey)/HighKey
+        print(f"{Fore.GREEN}{TrustMe}{Style.RESET_ALL}\n")
         return min(counts_sum, key=counts_sum.get) if reverse else max(counts_sum, key=counts_sum.get)
     return ""
 
@@ -182,5 +194,11 @@ async def __search_method3(question_keywords, question_key_nouns, answers, rever
     if set(noun_scores.values()) != {0}:
         return min(noun_scores, key=noun_scores.get) if reverse else max(noun_scores, key=noun_scores.get)
     if set(keyword_scores.values()) != {0}:
+        HighKey = max(keyword_scores, key=keyword_scores.get)
+        AvgKey = sum(keyword_scores.values())/3
+        round(AvgKey)
+        #LowKey = min(counts_sum, key=counts_sum.get)
+        TrustMe = (HighKey-AvgKey)/HighKey
+        print(f"{Fore.GREEN}{TrustMe}{Style.RESET_ALL}\n")
         return min(keyword_scores, key=keyword_scores.get) if reverse else max(keyword_scores, key=keyword_scores.get)
     return ""
